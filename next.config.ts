@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
   env: {
     NEXT_PUBLIC_APP_VERSION: packageJson.version,
   },
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+    incomingRequests: {
+      ignore: [/\api\/v1\/health/],
+    },
+  },
   experimental: {
     serverActions: {
       allowedOrigins: ['plugged.in'],

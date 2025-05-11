@@ -8,7 +8,7 @@ FROM base AS deps
 WORKDIR /app
 
 # Files needed for pnpm install
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Rebuild the source code only when needed
@@ -19,6 +19,10 @@ COPY . .
 
 # Disable Next.js telemetry during the build
 ENV NEXT_TELEMETRY_DISABLED 1
+
+# Accept DATABASE_URL at build time
+ARG DATABASE_URL_BUILD_TIME
+ENV DATABASE_URL=${DATABASE_URL_BUILD_TIME}
 
 RUN pnpm build
 

@@ -9,4 +9,8 @@ export default defineConfig({
   dbCredentials: {
     url: process.env.DATABASE_URL!,
   },
+  migrations: {
+    // @ts-expect-error TODO: Remove this once drizzle-kit is updated
+    journal: 'database',
+  },
 });

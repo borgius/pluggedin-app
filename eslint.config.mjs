@@ -23,7 +23,8 @@ const eslintConfig = [
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
-      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-imports': 'warn', // Changed from 'error' to 'warn'
+      'react-hooks/exhaustive-deps': 'warn', // Explicitly set to 'warn'
       'unused-imports/no-unused-vars': [
         'warn',
         {

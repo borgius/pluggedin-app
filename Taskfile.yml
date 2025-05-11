@@ -1,0 +1,19 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  build:
+    cmds:
+      - docker compose -f docker-compose.dev.yml down -v
+      - docker compose -f docker-compose.dev.yml up -d
+      - pnpm db:migrate:auth
+      - pnpm db:generate
+      - pnpm db:migrate
+      - node scripts/apply-fix-auth-tables.js
+      - node scripts/apply-fix-jwt-session.js
+      - docker compose build
+
