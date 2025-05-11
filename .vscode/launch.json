@@ -1,0 +1,41 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // This configuration is for attaching to a Node.js process already running with the --inspect flag,
+      // typically inside a Docker container.
+      "address": "localhost", // Assumes debug port is forwarded to localhost
+      "localRoot": "${workspaceFolder}/.next/standalone", // Local path corresponding to remoteRoot
+      "name": "Attach to Remote (Next.js in Docker)",
+      "port": 9229,
+      // IMPORTANT: Change "/app" to the actual absolute path of your Next.js app's
+      // working directory inside the Docker container (where server.js and .next/ are).
+      "remoteRoot": "/app",
+      "request": "attach",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceFolder}/*", // Maps webpack:///./app/file.ts to ${workspaceFolder}/app/file.ts
+        "webpack:///src/*": "${workspaceFolder}/src/*", // In case you use a src directory
+        "webpack:///_N_E/./*": "${workspaceFolder}/*",    // For Next.js specific client modules
+        "webpack:///_N_E/*": "${workspaceFolder}/*"       // Broader Next.js client modules
+      }
+    },
+    {
+      // This configuration is for launching your Next.js program locally.
+      // For Docker, use the "Attach to Remote" configuration above.
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program (Local Next.js)",
+      "skipFiles": ["<node_internals>/**"],
+      "program": "${workspaceFolder}/.next/standalone/server.js",
+      "outFiles": [
+        "${workspaceFolder}/.next/standalone/**/*.js",
+        "!**/node_modules/**"
+      ]
+    }
+  ]
+}

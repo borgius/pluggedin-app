@@ -7,6 +7,7 @@ import packageJson from './package.json';
 const nextConfig: NextConfig = {
   output: 'standalone',
   allowedDevOrigins: ['plugged.in'],
+  productionBrowserSourceMaps: true,
   async rewrites() {
     return [];
   },
@@ -36,6 +37,7 @@ const nextConfig: NextConfig = {
   webpack: (config: WebpackConfig, { isServer }: WebpackConfigContext) => {
     // Force Next.js to use the native Node.js fetch
     if (!isServer) {
+      config.devtool = 'source-map';
       config.resolve = {
         ...config.resolve,
         fallback: {

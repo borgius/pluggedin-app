@@ -6,14 +6,25 @@ vars:
   GREETING: Hello, World!
 
 tasks:
-  build:
-    cmds:
-      - docker compose -f docker-compose.dev.yml down -v
-      - docker compose -f docker-compose.dev.yml up -d
+
+  create-db:
+    env:
+      DATABASE_URL: "postgresql://metatool:m3t4t00l@localhost:8432/metatool"
+    cmds: 
+      - docker compose down -v
+      - docker compose up metatool-postgres -d --wait
       - pnpm db:migrate:auth
       - pnpm db:generate
       - pnpm db:migrate
       - node scripts/apply-fix-auth-tables.js
       - node scripts/apply-fix-jwt-session.js
+
+  build:
+    cmds:
+      - task: create-db
       - docker compose build
 
+  start:
+    cmds: 
+      - docker compose up -d
+      - docker compose logs -f
