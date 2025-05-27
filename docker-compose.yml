@@ -17,6 +17,7 @@ services:
       - '9229:9229'
     environment:
       - NODE_ENV=development
+      - DATABASE_URL="postgresql://$DATABASE_USER:$DATABASE_PASSWORD@metatool-postgres:5432/$DATABASE_NAME"
     volumes:
       - .env:/app/.env
     command: node --inspect=0.0.0.0:9229 server.js
@@ -32,9 +33,9 @@ services:
     image: postgres:16.2-alpine3.18
     restart: always
     environment:
-      POSTGRES_DB: metatool
-      POSTGRES_USER: metatool
-      POSTGRES_PASSWORD: m3t4t00l
+      POSTGRES_DB: $DATABASE_NAME
+      POSTGRES_USER: $DATABASE_USER
+      POSTGRES_PASSWORD: $DATABASE_PASSWORD      
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
@@ -58,6 +59,9 @@ services:
     command: pnpm drizzle-kit migrate
     env_file:
       - .env
+    environment:
+      DATABASE_URL: "postgresql://$DATABASE_USER:$DATABASE_PASSWORD@metatool-postgres:5432/$DATABASE_NAME"
+      
     depends_on:
       metatool-postgres:
         condition: service_healthy

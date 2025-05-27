@@ -9,11 +9,12 @@ dotenv:
   - .env
   - .env.local
 
+env:
+  DATABASE_URL: "postgresql://$DATABASE_USER:$DATABASE_PASSWORD@$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME"
+
 tasks:
 
   db:
-    env:
-      DATABASE_URL: "postgresql://metatool:m3t4t00l@localhost:8432/metatool"
     cmds: 
       - docker compose down -v
       - docker compose up metatool-postgres -d --wait
