@@ -17,9 +17,11 @@ services:
       - '9229:9229'
     environment:
       - NODE_ENV=development
-      - DATABASE_URL="postgresql://$DATABASE_USER:$DATABASE_PASSWORD@metatool-postgres:5432/$DATABASE_NAME"
+      - DATABASE_URL=postgresql://$DATABASE_USER:$DATABASE_PASSWORD@host:$DATABASE_PORT/$DATABASE_NAME
     volumes:
       - .env:/app/.env
+      # - .:/app
+    # command: npm run docker
     command: node --inspect=0.0.0.0:9229 server.js
     depends_on:
       metatool-postgres:
@@ -60,7 +62,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: "postgresql://$DATABASE_USER:$DATABASE_PASSWORD@metatool-postgres:5432/$DATABASE_NAME"
+      DATABASE_URL: postgresql://$DATABASE_USER:$DATABASE_PASSWORD@host:$DATABASE_PORT/$DATABASE_NAME
       
     depends_on:
       metatool-postgres:

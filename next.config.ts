@@ -6,7 +6,7 @@ import packageJson from './package.json';
 
 const nextConfig: NextConfig = {
   output: 'standalone',
-  allowedDevOrigins: ['plugged.in'],
+  allowedDevOrigins: ['plugged.in', 'localhost'],
   productionBrowserSourceMaps: true,
   async rewrites() {
     return [];
@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ['plugged.in'],
+      allowedOrigins: ['plugged.in', 'localhost'],
     },
     staleTimes: {
       dynamic: 30,  // 30 seconds for dynamic content

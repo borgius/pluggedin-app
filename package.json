@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "NODE_ENV=development next dev --port=12005",
+    "docker": "NODE_ENV=development NODE_OPTIONS='--inspect=0.0.0.0:9229' next dev --port=3000",
     "build": "next build",
     "postbuild": "cp -r .next/static .next/standalone/.next/ && cp -r public .next/standalone/",
     "start": "NODE_ENV=development PORT=12005 node .next/standalone/server.js",
@@ -151,5 +152,6 @@
         "tree-sitter"
       ]
     }
-  }
+  },
+  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977"
 }

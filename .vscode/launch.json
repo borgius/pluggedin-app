@@ -8,7 +8,7 @@
       // This configuration is for attaching to a Node.js process already running with the --inspect flag,
       // typically inside a Docker container.
       "address": "localhost", // Assumes debug port is forwarded to localhost
-      "localRoot": "${workspaceFolder}/.next/standalone", // Local path corresponding to remoteRoot
+      "localRoot": "${workspaceFolder}/.next/server", // Local path corresponding to remoteRoot
       "name": "Attach to Remote (Next.js in Docker)",
       "port": 9229,
       // IMPORTANT: Change "/app" to the actual absolute path of your Next.js app's

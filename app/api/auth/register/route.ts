@@ -105,6 +105,8 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const data = registerSchema.parse(body);
 
+    // console.log('DB:', process.env.DATABASE_URL)
+
     // Check if user already exists
     const existingUser = await db.query.users.findFirst({
       where: (users, { eq }) => eq(users.email, data.email),

@@ -10,13 +10,17 @@ dotenv:
   - .env.local
 
 env:
-  DATABASE_URL: "postgresql://$DATABASE_USER:$DATABASE_PASSWORD@$DATABASE_HOST:$DATABASE_PORT/$DATABASE_NAME"
+  DATABASE_URL: postgresql://{{.DATABASE_USER}}:{{.DATABASE_PASSWORD}}@{{.DATABASE_HOST}}:{{.DATABASE_PORT}}/{{.DATABASE_NAME}}
 
 tasks:
 
-  db:
+  db-reset:
     cmds: 
       - docker compose down -v
+      - task: db-migrate
+
+  db-migrate:
+    cmds: 
       - docker compose up metatool-postgres -d --wait
       - pnpm db:migrate:auth
       - pnpm db:generate
@@ -27,7 +31,7 @@ tasks:
   build:
     cmds:
       - pnpm i
-      - task: db
+      - task: db-migrate
       - docker compose build
 
   start:
