@@ -18,7 +18,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Disable Next.js telemetry during the build
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED=1 NODE_TLS_REJECT_UNAUTHORIZED=0
 
 # Accept DATABASE_URL at build time
 ARG DATABASE_URL_BUILD_TIME
@@ -33,15 +33,14 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ENV NODE_ENV production
+ENV NODE_ENV=development
 CMD ["pnpm", "drizzle-kit", "migrate"]
 
-# Production image, copy all the files and run next
+# development image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
 
-ENV NODE_ENV production
-ENV NEXT_TELEMETRY_DISABLED 1
+ENV NODE_ENV=development NEXT_TELEMETRY_DISABLED=1 NODE_TLS_REJECT_UNAUTHORIZED=0
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
@@ -60,7 +59,7 @@ USER nextjs
 
 EXPOSE 3000
 
-ENV PORT 3000
-ENV HOSTNAME "0.0.0.0"
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
 
 CMD ["node", "server.js"]

@@ -36,6 +36,18 @@
         "${workspaceFolder}/.next/standalone/**/*.js",
         "!**/node_modules/**"
       ]
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "serverReadyAction": {
+        "pattern": "started server on .+, url: (https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "autoAttachChildProcesses": true
     }
   ]
 }
