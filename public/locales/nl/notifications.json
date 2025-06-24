@@ -2,17 +2,25 @@
   "notifications": {
     "title": "Notificaties",
     "description": "U kunt hier alle systeemnotificaties zien",
+    "status": {
+      "unread": "Ongelezen"
+    },
     "actions": {
       "markAllAsRead": "Alles als gelezen markeren",
       "actions": "Acties",
-      "deleteAll": "Alle notificaties verwijderen"
+      "deleteAll": "Alle notificaties verwijderen",
+      "viewDetails": "Details bekijken",
+      "markAsRead": "Als gelezen markeren",
+      "delete": "Verwijderen",
+      "viewAll": "Alle notificaties bekijken"
     },
     "tabs": {
       "all": "Alles",
       "unread": "Ongelezen",
       "alerts": "Waarschuwingen",
       "info": "Informatie",
-      "success": "Succes"
+      "success": "Succes",
+      "notes": "Notities"
     },
     "empty": {
       "title": "Geen notificaties",
@@ -23,7 +31,8 @@
       "deleteSuccess": "Notificatie verwijderd",
       "deleteError": "Verwijderen van notificatie mislukt",
       "deleteAllSuccess": "Alle notificaties verwijderd",
-      "deleteAllError": "Verwijderen van alle notificaties mislukt"
+      "deleteAllError": "Verwijderen van alle notificaties mislukt",
+      "toggleCompleteError": "Bijwerken van notitie status mislukt"
     }
   }
 }

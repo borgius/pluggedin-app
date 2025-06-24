@@ -2,17 +2,25 @@
   "notifications": {
     "title": "Bildirimler",
     "description": "Sistemle ilgili tüm bildirimleri burada görebilirsiniz",
+    "status": {
+      "unread": "Okunmadı"
+    },
     "actions": {
       "markAllAsRead": "Tümünü Okundu İşaretle",
       "actions": "İşlemler",
-      "deleteAll": "Tüm Bildirimleri Sil"
+      "deleteAll": "Tüm Bildirimleri Sil",
+      "viewDetails": "Ayrıntıları Görüntüle",
+      "markAsRead": "Okundu",
+      "delete": "Sil",
+      "viewAll": "Tüm Bildirimleri Görüntüle"
     },
     "tabs": {
       "all": "Tümü",
       "unread": "Okunmamış",
       "alerts": "Uyarılar",
       "info": "Bilgiler",
-      "success": "Başarılar"
+      "success": "Başarılar",
+      "notes": "Notlar"
     },
     "empty": {
       "title": "Bildirim Bulunmuyor",
@@ -23,7 +31,8 @@
       "deleteSuccess": "Bildirim silindi",
       "deleteError": "Bildirim silinemedi",
       "deleteAllSuccess": "Tüm bildirimler silindi",
-      "deleteAllError": "Tüm bildirimler silinemedi"
+      "deleteAllError": "Tüm bildirimler silinemedi",
+      "toggleCompleteError": "Not durumu güncellenemedi"
     }
   }
 }

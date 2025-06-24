@@ -2,17 +2,25 @@
   "notifications": {
     "title": "सूचनाएं",
     "description": "आप यहाँ सभी सिस्टम सूचनाएं देख सकते हैं",
+    "status": {
+      "unread": "अपठित"
+    },
     "actions": {
       "markAllAsRead": "सभी को पढ़ा हुआ चिह्नित करें",
       "actions": "कार्रवाइयाँ",
-      "deleteAll": "सभी सूचनाएं हटाएं"
+      "deleteAll": "सभी सूचनाएं हटाएं",
+      "viewDetails": "विवरण देखें",
+      "markAsRead": "पढ़ा हुआ चिह्नित करें",
+      "delete": "हटाएं",
+      "viewAll": "सभी सूचनाएं देखें"
     },
     "tabs": {
       "all": "सभी",
       "unread": "अपठित",
       "alerts": "अलर्ट",
       "info": "जानकारी",
-      "success": "सफलता"
+      "success": "सफलता",
+      "notes": "नोट्स"
     },
     "empty": {
       "title": "कोई सूचना नहीं",
@@ -23,7 +31,8 @@
       "deleteSuccess": "सूचना हटाई गई",
       "deleteError": "सूचना हटाने में विफल",
       "deleteAllSuccess": "सभी सूचनाएं हटाई गईं",
-      "deleteAllError": "सभी सूचनाएं हटाने में विफल"
+      "deleteAllError": "सभी सूचनाएं हटाने में विफल",
+      "toggleCompleteError": "नोट स्थिति अपडेट करने में विफल"
     }
   }
 }

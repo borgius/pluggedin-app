@@ -129,20 +129,18 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
 
-          // Temporarily disable email verification check for testing
-          /*if (!user.emailVerified) {
+          // Check email verification
+          if (!user.emailVerified) {
             console.log('Email not verified');
             return null;
-          }*/
+          }
 
           const isPasswordValid = await compare(credentials.password, user.password);
 
           if (!isPasswordValid) {
-            console.log('Invalid password');
             return null;
           }
 
-          console.log('Login successful for:', user.email);
           return {
             id: user.id,
             name: user.name,
@@ -151,7 +149,6 @@ export const authOptions: NextAuthOptions = {
             emailVerified: user.emailVerified,
           };
         } catch (error) {
-          console.error('Auth error:', error);
           return null;
         }
       }

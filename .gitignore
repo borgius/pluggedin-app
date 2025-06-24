@@ -57,3 +57,10 @@ yarn-error.log*
 # Log directories
 logs/
 logs/mcp-servers/
+
+# User uploads
+uploads/
+
+CLAUDE.md
+# Sentry Config File
+.env.sentry-build-plugin

@@ -1,8 +1,8 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
-import { tr } from 'date-fns/locale';
-import { Bell, Check, Trash2 } from 'lucide-react';
+import { enUS, hi, ja, nl, tr, zhCN } from 'date-fns/locale';
+import { Bell, Check, CheckSquare, Circle, Square, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -10,7 +10,8 @@ import { useTranslation } from 'react-i18next';
 import { 
   deleteAllNotifications, 
   deleteNotification, 
-  markNotificationAsRead 
+  markNotificationAsRead,
+  toggleNotificationCompleted
 } from '@/app/actions/notifications';
 import { useNotifications } from '@/components/providers/notification-provider';
 import { Badge } from '@/components/ui/badge';
@@ -38,11 +39,23 @@ import { useToast } from '@/hooks/use-toast';
 export default function NotificationsPage() {
   const { currentProfile } = useProfiles();
   const { toast } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation('notifications');
   const profileUuid = currentProfile?.uuid || '';
   const { notifications, refreshNotifications, unreadCount, markAllAsRead } =
     useNotifications();
   const [activeTab, setActiveTab] = useState('all');
+  
+  // Get date locale based on current language
+  const getDateLocale = () => {
+    switch (i18n.language) {
+      case 'tr': return tr;
+      case 'nl': return nl;
+      case 'zh': return zhCN;
+      case 'ja': return ja;
+      case 'hi': return hi;
+      default: return enUS;
+    }
+  };
 
   // Function to get badge color based on notification type
   const getBadgeVariant = (type: string): "default" | "destructive" | "secondary" | "outline" => {
@@ -55,8 +68,20 @@ export default function NotificationsPage() {
         return 'destructive';
       case 'INFO':
         return 'secondary';
+      case 'CUSTOM':
+        return 'outline'; // Use outline for custom with yellow styling
       default:
         return 'outline';
+    }
+  };
+
+  // Function to get icon for notification type
+  const getNotificationIcon = (type: string) => {
+    switch (type.toUpperCase()) {
+      case 'CUSTOM':
+        return <Circle className="h-4 w-4 mr-2 text-yellow-500" />;
+      default:
+        return null;
     }
   };
 
@@ -117,6 +142,24 @@ export default function NotificationsPage() {
       toast({
         title: t('common.error'),
         description: t('notifications.toast.deleteAllError'),
+        variant: 'destructive',
+      });
+    }
+  };
+
+  // Handle toggle completed for custom notifications
+  const handleToggleCompleted = async (id: string) => {
+    if (!profileUuid) {
+      return;
+    }
+
+    try {
+      await toggleNotificationCompleted(id, profileUuid);
+      refreshNotifications();
+    } catch (_error) {
+      toast({
+        title: t('common.error'),
+        description: t('notifications.toast.toggleCompleteError'),
         variant: 'destructive',
       });
     }
@@ -187,6 +230,7 @@ export default function NotificationsPage() {
               <TabsTrigger value="ALERT">{t('notifications.tabs.alerts')}</TabsTrigger>
               <TabsTrigger value="INFO">{t('notifications.tabs.info')}</TabsTrigger>
               <TabsTrigger value="SUCCESS">{t('notifications.tabs.success')}</TabsTrigger>
+              <TabsTrigger value="CUSTOM">{t('notifications.tabs.notes')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value={activeTab}>
@@ -201,7 +245,7 @@ export default function NotificationsPage() {
                   </p>
                 </div>
               ) : (
-                <ScrollArea className="h-[calc(100vh-20rem)]">
+                <ScrollArea className="h-[var(--notification-content)]">
                   <div className="space-y-2">
                     {filteredNotifications.map((notification) => (
                       <Card
@@ -222,29 +266,56 @@ export default function NotificationsPage() {
                                   ? 'bg-red-500'
                                   : notification.type === 'INFO'
                                   ? 'bg-blue-500'
+                                  : notification.type === 'CUSTOM'
+                                  ? 'bg-yellow-500'
                                   : 'bg-muted-foreground'
                               }`}
                             />
                             <div className="flex-1 p-4">
                               <div className="flex items-center justify-between mb-1">
                                 <div className="flex items-center">
-                                  <h3 className="font-medium text-base">
+                                  {notification.type === 'CUSTOM' && (
+                                    <Button
+                                      variant="ghost"
+                                      size="sm"
+                                      className="p-0 h-auto mr-2"
+                                      onClick={() => handleToggleCompleted(notification.id)}
+                                    >
+                                      {notification.completed ? (
+                                        <CheckSquare className="h-5 w-5" />
+                                      ) : (
+                                        <Square className="h-5 w-5" />
+                                      )}
+                                    </Button>
+                                  )}
+                                  {getNotificationIcon(notification.type)}
+                                  <h3 className={`font-medium text-base ${notification.completed ? 'line-through opacity-60' : ''}`}>
                                     {notification.title}
                                   </h3>
-                                  <Badge
-                                    variant={getBadgeVariant(
-                                      notification.type
-                                    )}
-                                    className="ml-2"
-                                  >
-                                    {notification.type}
-                                  </Badge>
+                                  {notification.type !== 'CUSTOM' && (
+                                    <Badge
+                                      variant={getBadgeVariant(
+                                        notification.type
+                                      )}
+                                      className="ml-2"
+                                    >
+                                      {notification.type}
+                                    </Badge>
+                                  )}
+                                  {notification.type === 'CUSTOM' && notification.severity && (
+                                    <Badge
+                                      variant={getBadgeVariant(notification.severity)}
+                                      className="ml-2"
+                                    >
+                                      {notification.severity}
+                                    </Badge>
+                                  )}
                                   {!notification.read && (
                                     <Badge
                                       variant="secondary"
                                       className="ml-2"
                                     >
-                                      Okunmadı
+                                      {t('status.unread')}
                                     </Badge>
                                   )}
                                 </div>
@@ -253,12 +324,12 @@ export default function NotificationsPage() {
                                     new Date(notification.created_at),
                                     {
                                       addSuffix: true,
-                                      locale: tr,
+                                      locale: getDateLocale(),
                                     }
                                   )}
                                 </span>
                               </div>
-                              <p className="text-muted-foreground">
+                              <p className={`text-muted-foreground ${notification.completed ? 'line-through opacity-60' : ''}`}>
                                 {notification.message}
                               </p>
                               <div className="flex justify-between items-center mt-3">
@@ -267,7 +338,7 @@ export default function NotificationsPage() {
                                     href={notification.link}
                                     className="text-sm text-primary hover:underline"
                                   >
-                                    Ayrıntıları görüntüle
+                                    {t('actions.viewDetails')}
                                   </Link>
                                 ) : (
                                   <div />
@@ -282,7 +353,7 @@ export default function NotificationsPage() {
                                       }
                                     >
                                       <Check className="h-4 w-4 mr-1" />
-                                      Okundu
+                                      {t('actions.markAsRead')}
                                     </Button>
                                   )}
                                   <Button
@@ -294,7 +365,7 @@ export default function NotificationsPage() {
                                     }
                                   >
                                     <Trash2 className="h-4 w-4 mr-1" />
-                                    Sil
+                                    {t('actions.delete')}
                                   </Button>
                                 </div>
                               </div>
